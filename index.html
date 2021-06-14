@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cycle of Tomorrow</title>
+  <link rel="stylesheet" type="text/css" href="./layout.css">
+
+
+<script>
+  var TxtType = function(el, toRotate, period) {
+        this.toRotate = toRotate;
+        this.el = el;
+        this.loopNum = 0;
+        this.period = parseInt(period, 10) || 2000;
+        this.txt = '';
+        this.tick();
+        this.isDeleting = false;
+    };
+
+    TxtType.prototype.tick = function() {
+        var i = this.loopNum % this.toRotate.length;
+        var fullTxt = this.toRotate[i];
+
+        if (this.isDeleting) {
+        this.txt = fullTxt.substring(0, this.txt.length - 1);
+        } else {
+        this.txt = fullTxt.substring(0, this.txt.length + 1);
+        }
+
+        this.el.innerHTML = '<span class="wrap">'+this.txt+'</span>';
+
+        var that = this;
+        var delta = 200 - Math.random() * 100;
+
+        if (this.isDeleting) { delta /= 2; }
+
+        if (!this.isDeleting && this.txt === fullTxt) {
+        delta = this.period;
+        this.isDeleting = true;
+        } else if (this.isDeleting && this.txt === '') {
+        this.isDeleting = false;
+        this.loopNum++;
+        delta = 500;
+        }
+
+        setTimeout(function() {
+        that.tick();
+        }, delta);
+    };
+
+    window.onload = function() {
+        var elements = document.getElementsByClassName('typewrite');
+        for (var i=0; i<elements.length; i++) {
+            var toRotate = elements[i].getAttribute('data-type');
+            var period = elements[i].getAttribute('data-period');
+            if (toRotate) {
+              new TxtType(elements[i], JSON.parse(toRotate), period);
+            }
+        }
+        // INJECT CSS
+        var css = document.createElement("style");
+        css.type = "text/css";
+        css.innerHTML = ".typewrite > .wrap { border-right: 0.08em solid #fff}";
+        document.body.appendChild(css);
+    };
+</script>
+
+
+
+
+
+</head>
+<body>
+  <nav class="zone blue sticky">
+  	<ul class="main-nav">
+  		<li><a href="./about2/index.html" target="_blank">About</a></li>
+  		<li><a href="./product/index.html" target="_blank">Products</a></li>	
+  			
+  		<li class="push"><a href="http://eepurl.com/huQTrn" target="_blank">Sign Up</a></li>		
+  	</ul>	
+  </nav>
+
+  
+  <div class="container zone"><img class="cover" src=./img/cycle3.jpg
+    > <br>
+     <h1 class="animate__animated animate__fadeInDown" ><strong>cycle of tomorrow.</strong></h1>
+       </div>
+
+
+       <div  class="container zone typer">
+        <h4>
+
+
+  <a href="" class="typewrite" data-period="2000" data-type=' ["keep innovating.","keep tinkering.","keep designing.","keep adapting.","keep improvising.","keep implementing.","failure?","retry!"]'>
+    <span class="wrap"></span>
+  </a>
+</h4>
+       </div>
+
+
+
+
+  <div class="zone blue grid-wrapper">
+  	<div class="box zone"><img src="./img/files_2.png"></div>	
+  	<div class="box zone"><img src="./img/desktop_analytics_2.png"></div>
+  	<div class="box zone"><img src="./img/monitor_coding_2.png"></div>
+  	<div class="box zone"><img src="./img/monitor_settings_2.png"></div>
+  </div>
+  <footer class="zone yellow">made with ❤</footer>
+</body>
+</html>
